@@ -31,3 +31,5 @@ Route::put('update',[directController::class,'updateContact']);
 Route::get('search/{search}',[directController::class,'search']);
 
 
+//delete an register 
+Route::delete('delete/{id}',[directController::class,'Delete']);
