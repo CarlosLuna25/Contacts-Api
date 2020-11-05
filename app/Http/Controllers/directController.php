@@ -96,6 +96,18 @@ class directController extends Controller
         
     }
 
+    //Search function return all registers where emails or name LIKE $search
+    public function search($se){
+        
+
+            return Response([
+                'data'=> Directorio::where('name','LIKE','%'.$se.'%')
+                                    ->orWhere('email','LIKE', '%'.$se.'%')->get(),
+            ],200);
+
+        
+    }
+
     /**
      * Store a newly created resource in storage.
      *

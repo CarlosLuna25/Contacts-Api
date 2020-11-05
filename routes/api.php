@@ -18,7 +18,7 @@ use App\Http\Controllers\directController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
+//get all or one register
 Route::get('directory/{id?}',[directController::class,'index']);
 
 //add a register
@@ -26,4 +26,8 @@ Route::post('add',[directController::class,'add']);
 
 //update
 Route::put('update',[directController::class,'updateContact']);
+
+//search data
+Route::get('search/{search}',[directController::class,'search']);
+
 
