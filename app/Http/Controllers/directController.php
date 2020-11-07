@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Directorio;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Validator;
 
 class directController extends Controller
 {
@@ -53,29 +54,48 @@ class directController extends Controller
 
     public function add(Request $req)
     {
-        $contact = new Directorio();
-        $contact->name = $req->name;
-        $contact->direction = $req->direction;
-        $contact->phone = $req->phone;
-        $contact->email = $req->email;
-
-        $contact->photo_path = $req->photo_path;
-        $exist = Directorio::where('email', '=', $contact->email)->first();
-        if (!$exist) {
-            $result = $contact->save();
-            if ($result) {
-                # code...
-                return Response([ 'success' => true,
-                'message'=>'record has been created',
+        $rules = [
+            'name' => 'string|required',
+            'email' => 'email|required|unique:directorios'
+        ];
+        $validate = \Validator::make($req->all(), $rules);
+        if ($validate->fails()) {
+            return Response([
+                'success' => false,
+                'message' => 'Validation Error',
                 'App_name' => $_SERVER["APP_NAME"],
                 'Method' => $_SERVER['REQUEST_METHOD'],
                 'content-type' => $_SERVER['CONTENT_TYPE'],
-                'REQUEST_URL' => $_SERVER['REQUEST_URI'],], 201);
-            } else {
-                return Response(['status' => 'Something is wrong'], 200);
-            }
+                'REQUEST_URL' => $_SERVER['REQUEST_URI'],
+                'data' => $validate->errors(),
+            ], 401);
         } else {
-            return Response(['status' => 'data already exist'], 401);
+            $contact = new Directorio();
+            $contact->name = $req->name;
+            $contact->direction = $req->direction;
+            $contact->phone = $req->phone;
+            $contact->email = $req->email;
+
+            $contact->photo_path = $req->photo_path;
+            $exist = Directorio::where('email', '=', $contact->email)->first();
+            if (!$exist) {
+                $result = $contact->save();
+                if ($result) {
+                    # code...
+                    return Response([
+                        'success' => true,
+                        'message' => 'record has been created',
+                        'App_name' => $_SERVER["APP_NAME"],
+                        'Method' => $_SERVER['REQUEST_METHOD'],
+                        'content-type' => $_SERVER['CONTENT_TYPE'],
+                        'REQUEST_URL' => $_SERVER['REQUEST_URI'],
+                    ], 201);
+                } else {
+                    return Response(['status' => 'Something is wrong'], 200);
+                }
+            } else {
+                return Response(['status' => 'data already exist'], 401);
+            }
         }
     }
     public function updateContact(Request $req)
@@ -83,37 +103,56 @@ class directController extends Controller
         $contact = Directorio::find($req->id);
         //comprobamos que campos se quieren actualizar en el request
         if ($contact) {
-            $update = [];
-            if ($req->name) {
-                $contact->name = $req->name;
-                $update['name'] = $contact->name;
-            }
-            if ($req->direction) {
-                $contact->direction = $req->direction;
-                $update['direction'] = $contact->direction;
-            }
-            if ($req->phone) {
-                $contact->phone = $req->phone;
-                $update['phone'] = $contact->phone;
-            }
-            if ($req->email) {
-                $contact->email = $req->email;
-                $update['email'] = $contact->email;
-            }
-            if ($req->photo_path) {
-                $contact->photo_path = $req->photo_path;
-                $update['photo_path'] = $contact->photo_path;
-            }
-            $contact->save();
-            return Response([
-                'success' => true,
-                'message' => 'record updated',
-                'App_name' => $_SERVER["APP_NAME"],
-                'Method' => $_SERVER['REQUEST_METHOD'],
-                'content-type' => $_SERVER['CONTENT_TYPE'],
-                'REQUEST_URL' => $_SERVER['REQUEST_URI'],
-                'updated' => $update
-            ], 200);
+             
+                $update = [];
+                if ($req->name && $req->name!=$contact->name) {
+                    $contact->name = $req->name;
+                    $update['name'] = $contact->name;
+                }
+                if ($req->direction && $req->direction!=$contact->direction) {
+                    $contact->direction = $req->direction;
+                    $update['direction'] = $contact->direction;
+                }
+                if ($req->phone && $req->phone!=$contact->phone) {
+                    $contact->phone = $req->phone;
+                    $update['phone'] = $contact->phone;
+                }
+                if ($req->email && $req->email != $contact->email) {
+                    $rules = [
+                
+                        'email' => 'email|unique:directorios'
+                    ];
+                    $validate = \Validator::make($req->all(), $rules);
+                    if ($validate->fails()) {
+                        return Response([
+                            'success' => false,
+                            'message' => 'Error de validacion',
+                            'App_name' => $_SERVER["APP_NAME"],
+                            'Method' => $_SERVER['REQUEST_METHOD'],
+                            'content-type' => $_SERVER['CONTENT_TYPE'],
+                            'REQUEST_URL' => $_SERVER['REQUEST_URI'],
+                            'data' => $validate->errors(),
+                        ], 401);
+                    }         
+                    $contact->email = $req->email;
+                    $update['email'] = $contact->email;
+                }
+                if ($req->photo_path) {
+                    $contact->photo_path = $req->photo_path;
+                    $update['photo_path'] = $contact->photo_path;
+                }
+                
+                $contact->save();
+                return Response([
+                    'success' => true,
+                    'message' => 'record updated',
+                    'App_name' => $_SERVER["APP_NAME"],
+                    'Method' => $_SERVER['REQUEST_METHOD'],
+                    'content-type' => $_SERVER['CONTENT_TYPE'],
+                    'REQUEST_URL' => $_SERVER['REQUEST_URI'],
+                    'updated' => $update
+                ], 200);
+            
         } else {
             return Response([
                 'success' => true,
@@ -122,8 +161,8 @@ class directController extends Controller
                 'Method' => $_SERVER['REQUEST_METHOD'],
                 'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
-                
-            ], 401);
+
+            ], 404);
         }
     }
 
@@ -145,88 +184,69 @@ class directController extends Controller
     }
     public function Delete($id)
     {
-        $delete= Directorio::find($id);
-        if($delete){
-            $result= $delete->delete();
-            if($result){
+        $delete = Directorio::find($id);
+        if ($delete) {
+            $result = $delete->delete();
+            if ($result) {
                 return Response([
                     'success' => true,
-                    'message'=>'record deleted',
+                    'message' => 'record deleted',
                     'App_name' => $_SERVER["APP_NAME"],
                     'Method' => $_SERVER['REQUEST_METHOD'],
                     'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                     'data' => ['deleted' => $delete],
                 ]);
-            }else{
+            } else {
                 return Response([
                     'success' => false,
-                    'message'=>'something Wrong',
+                    'message' => 'something Wrong',
                     'App_name' => $_SERVER["APP_NAME"],
                     'Method' => $_SERVER['REQUEST_METHOD'],
                     'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                     'data' => ['deleted' => $id],
-                ],404);
-
+                ], 404);
             }
-        }else{
+        } else {
             return Response([
                 'success' => false,
-                'message'=>'record not found',
+                'message' => 'record not found',
                 'App_name' => $_SERVER["APP_NAME"],
                 'Method' => $_SERVER['REQUEST_METHOD'],
                 'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                 'data' => ['deleted' => $id],
-            ],404);
+            ], 404);
         }
-
-       
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function testData(Request $req)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $rules = [
+            'name' => 'string|required',
+            'email' => 'email|required|unique:directorios'
+        ];
+        $validate = \Validator::make($req->all(), $rules);
+        if ($validate->fails()) {
+            return Response([
+                'success' => false,
+                'message' => 'Error de validacion',
+                'App_name' => $_SERVER["APP_NAME"],
+                'Method' => $_SERVER['REQUEST_METHOD'],
+                'content-type' => $_SERVER['CONTENT_TYPE'],
+                'REQUEST_URL' => $_SERVER['REQUEST_URI'],
+                'data' => $validate->errors(),
+            ], 404);
+        } else {
+            return Response([
+                'success' => true,
+                'message' => 'record saved',
+                'App_name' => $_SERVER["APP_NAME"],
+                'Method' => $_SERVER['REQUEST_METHOD'],
+                'content-type' => $_SERVER['CONTENT_TYPE'],
+                'REQUEST_URL' => $_SERVER['REQUEST_URI'],
+                'data' => [$req->all()],
+            ]);
+        }
     }
 }

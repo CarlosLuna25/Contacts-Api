@@ -33,3 +33,6 @@ Route::get('search/{search}',[directController::class,'search']);
 
 //delete an register 
 Route::delete('delete/{id}',[directController::class,'Delete']);
+
+//validations 
+Route::post('save',[directController::class, 'testData']);
