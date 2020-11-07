@@ -9,6 +9,11 @@ use Validator;
 
 class directController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('client');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +27,7 @@ class directController extends Controller
                 return Response([
                     'success' => true,
                     'message' => 'record found',
-                    'App_name' => $_SERVER["APP_NAME"],
+                   
                     'Method' => $_SERVER['REQUEST_METHOD'],
                     'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -32,7 +37,7 @@ class directController extends Controller
                 return Response([
                     'success' => true,
                     'message' => 'Record not found',
-                    'App_name' => $_SERVER["APP_NAME"],
+                    
                     'Method' => $_SERVER['REQUEST_METHOD'],
                     'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -43,7 +48,7 @@ class directController extends Controller
             return Response([
                 'success' => true,
                 'message' => 'records found',
-                'App_name' => $_SERVER["APP_NAME"],
+                
                 'Method' => $_SERVER['REQUEST_METHOD'],
                 'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -63,7 +68,7 @@ class directController extends Controller
             return Response([
                 'success' => false,
                 'message' => 'Validation Error',
-                'App_name' => $_SERVER["APP_NAME"],
+                
                 'Method' => $_SERVER['REQUEST_METHOD'],
                 'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -85,7 +90,7 @@ class directController extends Controller
                     return Response([
                         'success' => true,
                         'message' => 'record has been created',
-                        'App_name' => $_SERVER["APP_NAME"],
+                     
                         'Method' => $_SERVER['REQUEST_METHOD'],
                         'content-type' => $_SERVER['CONTENT_TYPE'],
                         'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -127,7 +132,7 @@ class directController extends Controller
                         return Response([
                             'success' => false,
                             'message' => 'Error de validacion',
-                            'App_name' => $_SERVER["APP_NAME"],
+                            
                             'Method' => $_SERVER['REQUEST_METHOD'],
                             'content-type' => $_SERVER['CONTENT_TYPE'],
                             'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -146,7 +151,7 @@ class directController extends Controller
                 return Response([
                     'success' => true,
                     'message' => 'record updated',
-                    'App_name' => $_SERVER["APP_NAME"],
+                   
                     'Method' => $_SERVER['REQUEST_METHOD'],
                     'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -157,7 +162,7 @@ class directController extends Controller
             return Response([
                 'success' => true,
                 'message' => 'record not found',
-                'App_name' => $_SERVER["APP_NAME"],
+              
                 'Method' => $_SERVER['REQUEST_METHOD'],
                 'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -174,7 +179,7 @@ class directController extends Controller
         return Response([
             'success' => true,
             'message' => 'records found',
-            'App_name' => $_SERVER["APP_NAME"],
+          
             'Method' => $_SERVER['REQUEST_METHOD'],
             'content-type' => $_SERVER['CONTENT_TYPE'],
             'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -191,7 +196,7 @@ class directController extends Controller
                 return Response([
                     'success' => true,
                     'message' => 'record deleted',
-                    'App_name' => $_SERVER["APP_NAME"],
+                    
                     'Method' => $_SERVER['REQUEST_METHOD'],
                     'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -201,7 +206,7 @@ class directController extends Controller
                 return Response([
                     'success' => false,
                     'message' => 'something Wrong',
-                    'App_name' => $_SERVER["APP_NAME"],
+                 
                     'Method' => $_SERVER['REQUEST_METHOD'],
                     'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -212,7 +217,7 @@ class directController extends Controller
             return Response([
                 'success' => false,
                 'message' => 'record not found',
-                'App_name' => $_SERVER["APP_NAME"],
+               
                 'Method' => $_SERVER['REQUEST_METHOD'],
                 'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -231,7 +236,7 @@ class directController extends Controller
             return Response([
                 'success' => false,
                 'message' => 'Error de validacion',
-                'App_name' => $_SERVER["APP_NAME"],
+               
                 'Method' => $_SERVER['REQUEST_METHOD'],
                 'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
@@ -241,7 +246,7 @@ class directController extends Controller
             return Response([
                 'success' => true,
                 'message' => 'record saved',
-                'App_name' => $_SERVER["APP_NAME"],
+             
                 'Method' => $_SERVER['REQUEST_METHOD'],
                 'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
