@@ -31,7 +31,6 @@ class directController extends Controller
                     'message' => 'record found',
                    
                     'Method' => $_SERVER['REQUEST_METHOD'],
-                    'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                     'data' => $data,
                 ], 200);
@@ -41,7 +40,6 @@ class directController extends Controller
                     'message' => 'Record not found',
                     
                     'Method' => $_SERVER['REQUEST_METHOD'],
-                    'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                     'data' => []
                 ], 202);
@@ -52,7 +50,6 @@ class directController extends Controller
                 'message' => 'records found',
                 
                 'Method' => $_SERVER['REQUEST_METHOD'],
-                'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                 'data' => Directorio::all(),
             ], 200);
@@ -73,7 +70,6 @@ class directController extends Controller
                 'message' => 'Validation Error',
                 
                 'Method' => $_SERVER['REQUEST_METHOD'],
-                'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                 'data' => $validate->errors(),
             ], 401);
@@ -97,7 +93,6 @@ class directController extends Controller
                         'message' => 'record has been created',
                      
                         'Method' => $_SERVER['REQUEST_METHOD'],
-                        'content-type' => $_SERVER['CONTENT_TYPE'],
                         'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                     ], 201);
                 } else {
@@ -139,7 +134,6 @@ class directController extends Controller
                             'message' => 'Error de validacion',
                             
                             'Method' => $_SERVER['REQUEST_METHOD'],
-                            'content-type' => $_SERVER['CONTENT_TYPE'],
                             'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                             'data' => $validate->errors(),
                         ], 401);
@@ -158,7 +152,6 @@ class directController extends Controller
                     'message' => 'record updated',
                    
                     'Method' => $_SERVER['REQUEST_METHOD'],
-                    'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                     'updated' => $update
                 ], 200);
@@ -169,7 +162,6 @@ class directController extends Controller
                 'message' => 'record not found',
               
                 'Method' => $_SERVER['REQUEST_METHOD'],
-                'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
 
             ], 404);
@@ -186,7 +178,6 @@ class directController extends Controller
             'message' => 'records found',
           
             'Method' => $_SERVER['REQUEST_METHOD'],
-            'content-type' => $_SERVER['CONTENT_TYPE'],
             'REQUEST_URL' => $_SERVER['REQUEST_URI'],
             'data' => Directorio::where('name', 'LIKE', '%' . $se . '%')
                 ->orWhere('email', 'LIKE', '%' . $se . '%')->get(),
@@ -203,7 +194,6 @@ class directController extends Controller
                     'message' => 'record deleted',
                     
                     'Method' => $_SERVER['REQUEST_METHOD'],
-                    'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                     'data' => ['deleted' => $delete],
                 ]);
@@ -213,7 +203,6 @@ class directController extends Controller
                     'message' => 'something Wrong',
                  
                     'Method' => $_SERVER['REQUEST_METHOD'],
-                    'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                     'data' => ['deleted' => $id],
                 ], 404);
@@ -224,7 +213,6 @@ class directController extends Controller
                 'message' => 'record not found',
                
                 'Method' => $_SERVER['REQUEST_METHOD'],
-                'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                 'data' => ['deleted' => $id],
             ], 404);
@@ -243,7 +231,6 @@ class directController extends Controller
                 'message' => 'Error de validacion',
                
                 'Method' => $_SERVER['REQUEST_METHOD'],
-                'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                 'data' => $validate->errors(),
             ], 404);
@@ -253,7 +240,6 @@ class directController extends Controller
                 'message' => 'record saved',
              
                 'Method' => $_SERVER['REQUEST_METHOD'],
-                'content-type' => $_SERVER['CONTENT_TYPE'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                 'data' => [$req->all()],
             ]);

@@ -40,7 +40,6 @@ class fileController extends Controller
                         'message' => 'File uploaded',
 
                         'Method' => $_SERVER['REQUEST_METHOD'],
-                        'content-type' => $_SERVER['CONTENT_TYPE'],
                         'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                         'data' => [
                             'file' => $image,
@@ -52,7 +51,7 @@ class fileController extends Controller
             } else {
                 return Response(
                     [
-                        'success' => true,
+                        'success' => false,
                         'message' => 'Error on update'
                     ]
                 );
@@ -60,11 +59,10 @@ class fileController extends Controller
         } else {
             return Response(
                 [
-                    'success' => true,
+                    'success' => false,
                     'message' => 'Contact not found',
 
                     'Method' => $_SERVER['REQUEST_METHOD'],
-                    'content-type' => $_SERVER['CONTENT_TYPE'],
                     'REQUEST_URL' => $_SERVER['REQUEST_URI'],
 
                 ],
