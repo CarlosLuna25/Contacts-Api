@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\directController;
+use App\Http\Controllers\fileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,3 +37,5 @@ Route::delete('delete/{id}',[directController::class,'Delete']);
 
 //test route 
 Route::post('save',[directController::class, 'testData']);
+
+Route::post('upload/{id}',[fileController::class, 'upload']);

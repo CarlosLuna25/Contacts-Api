@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Directorio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Response;
 use Validator;
 
@@ -61,7 +63,8 @@ class directController extends Controller
     {
         $rules = [
             'name' => 'string|required',
-            'email' => 'email|required|unique:directorios'
+            'email' => 'email|required|unique:directorios',
+            'photo'=>'image'
         ];
         $validate = \Validator::make($req->all(), $rules);
         if ($validate->fails()) {
@@ -80,8 +83,10 @@ class directController extends Controller
             $contact->direction = $req->direction;
             $contact->phone = $req->phone;
             $contact->email = $req->email;
-
-            $contact->photo_path = $req->photo_path;
+            $contact->photo_path= null;
+            
+    
+          
             $exist = Directorio::where('email', '=', $contact->email)->first();
             if (!$exist) {
                 $result = $contact->save();
