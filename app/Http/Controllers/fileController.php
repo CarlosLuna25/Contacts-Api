@@ -24,7 +24,7 @@ class fileController extends Controller
             if ($contact->photo_path!=null) {
 
 
-                Storage::delete('public/images/'.$contact->photo_path);
+                Storage::delete('storage/images/'.$contact->photo_path);
             }
             $image_path=time() . $contact->name . '.png';
             $image = $req->file('photo')->storeAs(
