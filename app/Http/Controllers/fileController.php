@@ -21,16 +21,17 @@ class fileController extends Controller
 
         $contact = Directorio::find($id);
         if ($contact) {
-            if ($contact->photo_path) {
+            if ($contact->photo_path!=null) {
 
 
-                Storage::delete($contact->photo_path);
+                Storage::delete('public/images/'.$contact->photo_path);
             }
+            $image_path=time() . $contact->name . '.png';
             $image = $req->file('photo')->storeAs(
-                'images',
-                time() . $contact->name . '.png'
+                'public/images', $image_path
+                
             );
-            $contact->photo_path=$image;
+            $contact->photo_path=$image_path;
 
             $result = $contact->save();
             if ($result) {
@@ -42,7 +43,7 @@ class fileController extends Controller
                         'Method' => $_SERVER['REQUEST_METHOD'],
                         'REQUEST_URL' => $_SERVER['REQUEST_URI'],
                         'data' => [
-                            'file' => $image,
+                            'file' => $contact->photo_path,
                             'id' => $id
                         ],
                     ],
@@ -70,4 +71,14 @@ class fileController extends Controller
             );
         }
     }
+
+    public function getImg($id){
+
+        $image= Directorio::find($id);
+        if ($image) {
+           
+        }
+
+    }
 }
+

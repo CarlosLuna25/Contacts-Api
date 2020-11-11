@@ -25,6 +25,8 @@ class directController extends Controller
     {
         if ($id && $id != null) {
             $data = Directorio::find($id);
+            $image= asset('public/images/' . $data->photo_path);
+            $data->photo_path=$image;
             if ($data) {
                 return Response([
                     'success' => true,
@@ -45,13 +47,20 @@ class directController extends Controller
                 ], 202);
             }
         } else {
+            $contacts=Directorio::all();
+            foreach ($contacts as $index => $contact) {
+                if($contact->photo_path && $contact->photo_path!=null){
+                    $image=asset('storage/images/' .$contact->photo_path);
+                $contact->photo_path=$image;
+                }
+            }
             return Response([
                 'success' => true,
                 'message' => 'records found',
                 
                 'Method' => $_SERVER['REQUEST_METHOD'],
                 'REQUEST_URL' => $_SERVER['REQUEST_URI'],
-                'data' => Directorio::all(),
+                'data' => $contacts,
             ], 200);
         }
     }
