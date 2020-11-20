@@ -25,7 +25,7 @@ class directController extends Controller
     {
         if ($id && $id != null) {
             $data = Directorio::find($id);
-            $image= asset('public/images/' . $data->photo_path);
+            $image= asset('storage/images/' . $data->photo_path);
             $data->photo_path=$image;
             if ($data) {
                 return Response([
